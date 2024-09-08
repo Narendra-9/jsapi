@@ -1,0 +1,29 @@
+.navbar a{
+    color: white !important;
+}
+body{
+    background-color: #0C0C0C !important;
+    color: white !important;
+    background-image: url(bg1.png) !important;
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.login-container{
+
+    padding: 20px;
+    width: 400px;
+    /* height: 300px; */
+    background-color: rgba(89, 89, 89, 0) ; 
+    backdrop-filter: blur(10px) !important;
+    border-radius: 10px;
+    
+}   

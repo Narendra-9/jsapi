@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetching API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/styles-home.css">
+</head>
+<body>
+    <header class="searchhead">
+        <!-- <nav class="navbar navbar-expand-lg bg-light search"> -->
+            <!-- <div class="container " style="min-width: 300px;"> -->
+                 <input class="form-control me-2 s" type="search" placeholder="Search" aria-label="Search">
+            <!-- </div> -->
+          <!-- </nav> -->
+    </header>
+    <section class="card-section">
+        <div class="container mt-5">
+            <div class="row row-cols-1 row-cols-md-3 g-4 cards-display">
+                <!-- <div class="col">
+                  <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a short card.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card h-100">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+        </div>
+    </section>
+    <section class="pagination-footer">
+        <nav aria-label="Page navigation example ">
+            <ul class="pagination justify-content-center page-count">
+              <!-- <li class="page-item disabled ">
+                <a class="page-link">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li> -->
+            </ul>
+          </nav>
+    </section>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script>
+    
+//  https://fakestoreapi.com/products
+// https://api.escuelajs.co/api/v1/products
+    let currentPage;
+
+    document.querySelector('.s').addEventListener('input', () => fetchdata(1));
+    function fetchdata(j){
+        
+        currentPage=j;
+        console.log(currentPage)
+        let startindex=(currentPage-1)*6
+        let endindex=startindex+6
+
+        // const cardDisplay = document.querySelector('.cards-display');/
+        document.querySelector('.cards-display').innerHTML = '';
+
+
+        // const pageCount = document.querySelector('.page-count');
+        document.querySelector('.page-count').innerHTML = '';
+        let url='https://fakestoreapi.com/products'
+        let fetcheddata=fetch(url)
+        fetcheddata
+        .then((response)=>{
+            return response.json()
+        })
+        .then((cards)=>{
+            // console.log(cards)
+            // console.log(cards.length)
+            arr=cards
+            // filteredcards=cards.filter(each=>(each.title).inludes(document.querySelector('.s').value))
+            // cards.forEach(each=>console.log(each.name.includes('Rain')))
+
+            const searchValue = document.querySelector('.s').value.toLowerCase();
+            const filteredCards = cards.filter(each => 
+                each.title.toLowerCase().includes(searchValue)
+            );
+            
+
+            let pagecount=Math.ceil(filteredCards.length/6)
+            console.log(pagecount)
+
+            // Clear previous cards
+            document.querySelector('.cards-display').innerHTML = '';
+            // Clear previous pagination
+            document.querySelector('.page-count').innerHTML = '';
+
+            document.querySelector('.page-count').innerHTML+=`<li class="page-item p">
+                    <a class="page-link">Previous</a>
+                  </li>`
+            for(let i=1;i<=pagecount;i++){
+                document.querySelector('.page-count').innerHTML+=
+                `<li class="page-item"><a class="page-link" href="#" onclick="fetchdata(${i})">${i}</a></li>`
+            }
+            document.querySelector('.page-count').innerHTML+=`<li class="page-item">
+                    <a class="page-link n">Next</a>
+                  </li>`
+              
+            for(let i=startindex;i<endindex;i++){
+                if(filteredCards[i]){
+                document.querySelector('.cards-display').innerHTML+=
+                `<div class="col mb-5 ">
+                      <div class="card h-100 justify-content-center align-items-center carder">
+                        <img src="${filteredCards[i].image}" class="card-img-top h-50 w-50 mt-5" alt="..." style="border-radius:10px">
+                        <div class="card-body">
+                          <h5 class="card-title">${filteredCards[i].title}</h5>
+                          <p class="card-text">${filteredCards[i].description}</p>
+                        </div>
+                      </div>
+                    </div>`
+                  }
+            }
+
+            if(currentPage==1){
+              document.querySelector('.p').classList.add('disabled')
+              document.querySelector('.p').removeEventListener('click',()=>fetchdata(currentPage-1))
+            }
+            document.querySelector('.n').addEventListener('click',()=>fetchdata(currentPage+1))
+            document.querySelector('.p').addEventListener('click',()=>fetchdata(currentPage-1))
+
+            if(currentPage==pagecount){
+              document.querySelector('.n').classList.add('disabled')
+              document.querySelector('.n').removeEventListener('click',()=>fetchdata(currentPage+1))
+            }
+            
+
+            document.querySelectorAll('.page-link').forEach((each)=>{
+                if(each.innerText==currentPage){
+                    each.classList.add('active')
+                }
+            })
+
+
+        })
+        .catch((err)=>{
+            console.log("Error - ",err)
+        });
+
+        // document.querySelectorAll('.page-link').forEach((each)=>{return console.log(each.innerText)})
+    }
+
+    fetchdata(1);
+    // fetchdata(17);
+    
+</script>
+</html>
