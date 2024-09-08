@@ -8,7 +8,7 @@ function submitrdetails(){
     let passsword2=document.querySelector('#password2')
     if(passsword1.value==passsword2.value){
         localStorage.setItem(email.value,passsword1.value)
-        window.location.href='Login.html'
+        window.location.href='../index.html'
         alert('Registered Successfully , Login to Continue ')
 
     }
