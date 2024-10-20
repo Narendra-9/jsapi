@@ -7,7 +7,7 @@ function loginfunction(){
 
     if(Object.keys(localStorage).includes(email.value)){
         if(localStorage[email.value]==Password.value){
-            window.location.href='../Home.html';
+            window.location.href='./Home.html';
             email.value=''
             Password.value=''
         }
